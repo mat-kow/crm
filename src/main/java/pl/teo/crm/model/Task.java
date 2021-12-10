@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity @Table(name = "tasks")
+@Entity (name = "tasks")
 @Getter @Setter
 public class Task {
     @Id @GeneratedValue

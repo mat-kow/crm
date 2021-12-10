@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity @Table(name = "projects")
+@Entity (name = "projects")
 @Getter @Setter
 public class Project {
     @Id @GeneratedValue

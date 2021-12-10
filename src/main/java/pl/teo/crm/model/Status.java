@@ -6,9 +6,8 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity @Table(name = "statuses")
+@Entity (name = "statuses")
 @Getter @Setter
 public class Status {
     @Id @GeneratedValue
