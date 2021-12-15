@@ -16,7 +16,7 @@ import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultProjectService implements ProjectService {
+public class ProjectServiceDefault implements ProjectService {
     private final ModelMapper mapper;
     private final ProjectRepo projectRepo;
     private final UserRepo userRepo;

@@ -12,7 +12,7 @@ import pl.teo.crm.model.Role;
 import pl.teo.crm.model.repository.UserRepo;
 
 @Service @RequiredArgsConstructor
-public class DefaultUserService implements UserService {
+public class UserServiceDefault implements UserService {
     private final ModelMapper mapper;
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;

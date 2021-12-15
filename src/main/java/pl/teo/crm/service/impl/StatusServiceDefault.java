@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultStatusService implements StatusService {
+public class StatusServiceDefault implements StatusService {
 
     private final StatusRepo statusRepo;
     private final ModelMapper modelMapper;
