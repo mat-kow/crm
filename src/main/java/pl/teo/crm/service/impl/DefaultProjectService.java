@@ -26,7 +26,7 @@ public class DefaultProjectService implements ProjectService {
     public String createNewProject(ProjectDto dto) {
         Project project = mapper.map(dto, Project.class);
         project.setSlug(generateSlug(project.getName()));
-        project.setActive(false);
+        project.setActive(true);
         projectRepo.save(project);
         return project.getName();
     }
