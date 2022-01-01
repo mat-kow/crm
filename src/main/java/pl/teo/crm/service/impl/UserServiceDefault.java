@@ -11,6 +11,9 @@ import pl.teo.crm.model.dto.UserDto;
 import pl.teo.crm.model.Role;
 import pl.teo.crm.model.repository.UserRepo;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service @RequiredArgsConstructor
 public class UserServiceDefault implements UserService {
     private final ModelMapper mapper;
@@ -28,5 +31,15 @@ public class UserServiceDefault implements UserService {
         user.addRole(Role.ROLE_USER);
         userRepo.save(user);
         return true;
+    }
+
+    @Override
+    public List<UserDto> findUser(String query) {
+        List<User> users = userRepo.findAllByQuery(query);
+        return users.stream().map(user -> {
+            UserDto dto = mapper.map(user, UserDto.class);
+            dto.setPassword("");
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
