@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.teo.crm.model.Project;
 import pl.teo.crm.model.dto.ProjectDto;
+import pl.teo.crm.model.dto.ProjectFormDto;
 import pl.teo.crm.model.repository.ProjectRepo;
 import pl.teo.crm.model.repository.UserRepo;
 import pl.teo.crm.service.ProjectService;
@@ -23,12 +24,11 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public String createNewProject(ProjectDto dto) {
+    public Project createNewProject(ProjectFormDto dto) {
         Project project = mapper.map(dto, Project.class);
         project.setSlug(generateSlug(project.getName()));
         project.setActive(true);
-        projectRepo.save(project);
-        return project.getName();
+        return projectRepo.save(project);
     }
 
     @Override
@@ -56,10 +56,10 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public void addUsers(int projectId, List<Integer> usersIds) {
+    public Project addUsers(int projectId, List<Integer> usersIds) {
         Project project = projectRepo.findById(projectId).orElseThrow(RuntimeException::new); //todo custom exception
         usersIds.forEach(userId -> project.addUser(userRepo.getById(userId))); //todo if user don't exist
-        projectRepo.save(project);
+        return projectRepo.save(project);
     }
 
     @Override
@@ -71,8 +71,22 @@ public class ProjectServiceDefault implements ProjectService {
     }
 
     @Override
-    public Project getProjectById(int projectId) {
-        return projectRepo.getById(projectId);
+    public ProjectDto getProjectById(int projectId) {
+        Project project = projectRepo.getById(projectId);
+        ProjectDto dto = mapper.map(project, ProjectDto.class);
+        dto.setCreatedAt(project.getCreatedAt().toLocalDateTime());
+        return dto;
+    }
+
+    @Override
+    @Transactional
+    public Project update(Project project) {
+        return projectRepo.save(project);
+    }
+
+    @Override
+    public List<Project> getAll() {
+        return projectRepo.findAll();
     }
 
     private String generateSlug(String input) {

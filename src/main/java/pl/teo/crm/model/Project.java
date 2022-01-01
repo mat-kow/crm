@@ -20,7 +20,7 @@ public class Project {
     private String site;
     @OneToMany(fetch = FetchType.EAGER)
     private Set<User> users;
-    boolean active;
+    private boolean active;
     @CreationTimestamp
     private Timestamp createdAt;
 

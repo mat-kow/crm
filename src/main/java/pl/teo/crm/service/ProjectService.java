@@ -2,15 +2,20 @@ package pl.teo.crm.service;
 
 import pl.teo.crm.model.Project;
 import pl.teo.crm.model.dto.ProjectDto;
+import pl.teo.crm.model.dto.ProjectFormDto;
 
 import java.util.List;
 
 public interface ProjectService {
-    String createNewProject(ProjectDto dto);
+    Project createNewProject(ProjectFormDto dto);
     boolean activateProject(int projectId);
     boolean deactivateProject(int projectId);
-    void addUsers(int projectId, List<Integer> usersIds);
+    Project addUsers(int projectId, List<Integer> usersIds);
     void deleteUsers(int projectId, List<Integer> usersIds);
 
-    Project getProjectById(int projectId);
+    ProjectDto getProjectById(int projectId);
+
+    Project update(Project project);
+
+    List<Project> getAll();
 }
