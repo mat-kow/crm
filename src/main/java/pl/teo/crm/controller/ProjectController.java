@@ -54,6 +54,7 @@ public class ProjectController {
     @PutMapping("/{projectId}")
     public Project updateProject(@PathVariable int projectId, @RequestBody Project project) {
         if (projectId == project.getId()) {
+            log.info(String.format("update project <%s>", project.getName()));
             return projectService.update(project);
         }
         throw new IllegalArgumentException(); //todo exception

@@ -26,8 +26,7 @@ public class TaskServiceDefault implements TaskService {
         task.setDescription(dto.getDescription());
         Project project = projectRepo.findById(dto.getProjectId()).orElseThrow(RuntimeException::new); //todo custom exception
         task.setProject(project);
-        Status status = statusRepo.findById(dto.getStatusId()).orElseThrow(RuntimeException::new); //todo custom exception
-        task.setStatus(status);
+        task.setStatus(statusRepo.findByName("default").orElseThrow(RuntimeException::new)); //todo custom exception
         Priority priority = priorityRepo.findById(dto.getPriorityName()).orElseThrow(RuntimeException::new); //todo custom exception
         task.setPriority(priority);
         User user = userRepo.findById(dto.getUserId()).orElseThrow(RuntimeException::new); //todo exception

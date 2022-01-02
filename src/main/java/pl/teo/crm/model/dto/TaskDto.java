@@ -8,7 +8,6 @@ public class TaskDto {
     private String topic;
     private String description;
     private int projectId;
-    private int statusId;
     private String priorityName;
     private int userId;
 
