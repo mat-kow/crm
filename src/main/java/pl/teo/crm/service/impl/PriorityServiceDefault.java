@@ -53,8 +53,14 @@ public class PriorityServiceDefault implements PriorityService {
     }
 
     @Override
-    public List<String> getActivePriorities() {
-        return priorityRepo.getAllByActiveTrue().stream().map(Priority::getName).collect(Collectors.toList());
+    public List<Priority> getActivePriorities() {
+        return priorityRepo.getAllByActiveTrue();
+    }
+
+    @Override
+    public List<String> getActivePrioritiesNames() {
+        return priorityRepo.getAllByActiveTrue().stream()
+                .map(Priority::getName).collect(Collectors.toList());
     }
 
 

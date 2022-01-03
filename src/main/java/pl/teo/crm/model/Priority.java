@@ -12,4 +12,5 @@ public class Priority {
     @Id
     private String name;
     private boolean active;
+    private int sortValue;
 }

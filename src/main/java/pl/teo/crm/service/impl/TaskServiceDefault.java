@@ -8,6 +8,8 @@ import pl.teo.crm.model.dto.TaskDto;
 import pl.teo.crm.model.repository.*;
 import pl.teo.crm.service.TaskService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TaskServiceDefault implements TaskService {
@@ -35,5 +37,20 @@ public class TaskServiceDefault implements TaskService {
         }
         task.setUser(user);
         taskRepo.save(task);
+    }
+
+    @Override
+    public List<Task> getByProjectId(int projectId) {
+        return taskRepo.findAllByProjectId(projectId);
+    }
+
+    @Override
+    public Task getTask(int id) {
+        return taskRepo.findById(id).orElseThrow(RuntimeException::new); //todo exception
+    }
+
+    @Override
+    public Task update(Task task) {
+        return taskRepo.save(task);
     }
 }

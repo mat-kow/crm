@@ -3,6 +3,7 @@ package pl.teo.crm.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import pl.teo.crm.model.Priority;
 import pl.teo.crm.model.dto.PriorityDto;
 import pl.teo.crm.service.PriorityService;
 
@@ -22,8 +23,14 @@ public class PriorityController {
         priorityService.createPriority(dto);
     }
 
+    @GetMapping("/names")
+    public List<String> getPrioritiesNames() {
+        log.info("Fetching active priorities names");
+        return priorityService.getActivePrioritiesNames();
+    }
+
     @GetMapping("")
-    public List<String> getPriorities() {
+    public List<Priority> getPriorities() {
         log.info("Fetching active priorities");
         return priorityService.getActivePriorities();
     }
