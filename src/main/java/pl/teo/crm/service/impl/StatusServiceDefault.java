@@ -20,11 +20,10 @@ public class StatusServiceDefault implements StatusService {
 
     @Override
     @Transactional
-    public void createStatus(StatusDto dto) {
+    public Status createStatus(StatusDto dto) {
         Status status = modelMapper.map(dto, Status.class);
         status.setActive(true);
-        status.setSortingValue(0);
-        statusRepo.save(status);
+        return statusRepo.save(status);
     }
 
     @Override
@@ -33,34 +32,19 @@ public class StatusServiceDefault implements StatusService {
     }
 
     @Override
-    @Transactional
-    public boolean activateStatus(int statusId) {
-        Status status = statusRepo.findById(statusId).orElseThrow(RuntimeException::new); //todo custom exception
-        if (status.isActive()) {
-            return false;
-        }
-        status.setActive(true);
-        statusRepo.save(status);
-        return true;
-    }
-    @Override
-    @Transactional
-    public boolean deactivateStatus(int statusId) {
-        Status status = statusRepo.findById(statusId).orElseThrow(RuntimeException::new); //todo custom exception
-        if (!status.isActive()) {
-            return false;
-        }
-        status.setActive(false);
-        statusRepo.save(status);
-        return true;
+    public Collection<Status> getAll() {
+        return statusRepo.findAll();
     }
 
     @Override
     @Transactional
-    public void setSorting(int statusId, int sortValue) {
-        Status status = statusRepo.findById(statusId).orElseThrow(RuntimeException::new); //todo custom exception;
-        status.setSortingValue(sortValue);
-        statusRepo.save(status);
+    public Status update(Status status) {
+        return statusRepo.save(status);
+    }
+
+    @Override
+    public Status get(int id) {
+        return statusRepo.findById(id).orElseThrow(RuntimeException::new); //todo exception
     }
 
 }

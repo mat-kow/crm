@@ -9,6 +9,7 @@ import pl.teo.crm.model.dto.PriorityDto;
 import pl.teo.crm.model.repository.PriorityRepo;
 import pl.teo.crm.service.PriorityService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -30,31 +31,24 @@ public class PriorityServiceDefault implements PriorityService {
     }
 
     @Override
-    @Transactional
-    public boolean activatePriority(String priorityName) {
-        Priority priority = priorityRepo.findById(priorityName).orElseThrow(RuntimeException::new); //todo custom exception
-        if (priority.isActive()) {
-            return false;
-        }
-        priority.setActive(true);
-        priorityRepo.save(priority);
-        return true;
-    }
-    @Override
-    @Transactional
-    public boolean deactivatePriority(String priorityName) {
-        Priority priority = priorityRepo.findById(priorityName).orElseThrow(RuntimeException::new); //todo custom exception
-        if (!priority.isActive()) {
-            return false;
-        }
-        priority.setActive(false);
-        priorityRepo.save(priority);
-        return true;
+    public List<Priority> getActivePriorities() {
+        return priorityRepo.getAllByActiveTrue();
     }
 
     @Override
-    public List<Priority> getActivePriorities() {
-        return priorityRepo.getAllByActiveTrue();
+    public Collection<Priority> getAll() {
+        return priorityRepo.findAll();
+    }
+
+    @Override
+    public Priority get(int id) {
+        return priorityRepo.findById(id).orElseThrow(RuntimeException::new); //todo exception
+    }
+
+    @Override
+    @Transactional
+    public Priority update(Priority priority) {
+        return priorityRepo.save(priority);
     }
 
     @Override
@@ -62,6 +56,5 @@ public class PriorityServiceDefault implements PriorityService {
         return priorityRepo.getAllByActiveTrue().stream()
                 .map(Priority::getName).collect(Collectors.toList());
     }
-
 
 }

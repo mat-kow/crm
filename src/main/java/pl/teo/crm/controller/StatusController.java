@@ -19,18 +19,31 @@ public class StatusController {
     private final StatusService statusService;
 
     @PostMapping("")
-    public void createNewStatus(@RequestBody StatusDto dto) {
-        statusService.createStatus(dto);
-    }
-
-    @PutMapping("/{statusId}/sorting/{sortValue}")
-    public void setSortingValue(@PathVariable int statusId, @PathVariable int sortValue) {
-        statusService.setSorting(statusId, sortValue);
+    public Status createNewStatus(@RequestBody StatusDto dto) {
+        return statusService.createStatus(dto);
     }
 
     @GetMapping("")
-    public Collection<Status> getStatuses() {
+    public Collection<Status> getActiveStatuses() {
         return statusService.getActiveStatusList();
+    }
+
+    @GetMapping("/all")
+    public Collection<Status> getAllStatuses() {
+        return statusService.getAll();
+    }
+
+    @PutMapping("/{id}")
+    public Status updateStatus(@PathVariable int id, @RequestBody Status status) {
+        if (id == status.getId()) {
+            return statusService.update(status);
+        }
+        throw new RuntimeException(); //todo exception
+    }
+
+    @GetMapping("/{id}")
+    public Status getStatus(@PathVariable int id) {
+        return statusService.get(id);
     }
 
 }

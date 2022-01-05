@@ -6,4 +6,5 @@ import lombok.Setter;
 @Getter @Setter
 public class StatusDto {
     private String name;
+    private int sortingValue;
 }

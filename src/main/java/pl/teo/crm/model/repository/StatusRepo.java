@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface StatusRepo extends JpaRepository<Status, Integer> {
     List<Status> getAllByActiveTrue();
     Optional<Status> findByName(String name);
+    Optional<Status> findById(int id);
 }

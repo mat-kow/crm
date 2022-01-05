@@ -7,6 +7,7 @@ import pl.teo.crm.model.Priority;
 import pl.teo.crm.model.dto.PriorityDto;
 import pl.teo.crm.service.PriorityService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -30,8 +31,29 @@ public class PriorityController {
     }
 
     @GetMapping("")
-    public List<Priority> getPriorities() {
+    public List<Priority> getActivePriorities() {
         log.info("Fetching active priorities");
         return priorityService.getActivePriorities();
+    }
+
+    @GetMapping("/all")
+    public Collection<Priority> getAllPriorities() {
+        log.info("Fetching all priorities");
+        return priorityService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Priority getPriority(@PathVariable int id) {
+        log.info(String.format("Fetching priority id <%d>", id));
+        return priorityService.get(id);
+    }
+
+    @PutMapping("/{id}")
+    public Priority updatePriority(@PathVariable int id, @RequestBody Priority priority) {
+        log.info(String.format("updating priority <%s>", priority.getName()));
+        if (id == priority.getId()) {
+            return priorityService.update(priority);
+        }
+        throw new RuntimeException(); //todo exception
     }
 }

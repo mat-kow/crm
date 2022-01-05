@@ -6,12 +6,10 @@ import pl.teo.crm.model.dto.StatusDto;
 import java.util.Collection;
 
 public interface StatusService {
-    void createStatus(StatusDto dto);
+    Status createStatus(StatusDto dto);
 
     Collection<Status> getActiveStatusList();
-    boolean activateStatus(int statusId);
-    boolean deactivateStatus(int statusId);
-
-    void setSorting(int statusId, int sortValue);
-
+    Collection<Status> getAll();
+    Status update(Status status);
+    Status get(int id);
 }

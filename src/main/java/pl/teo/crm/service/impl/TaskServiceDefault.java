@@ -29,7 +29,7 @@ public class TaskServiceDefault implements TaskService {
         Project project = projectRepo.findById(dto.getProjectId()).orElseThrow(RuntimeException::new); //todo custom exception
         task.setProject(project);
         task.setStatus(statusRepo.findByName("default").orElseThrow(RuntimeException::new)); //todo custom exception
-        Priority priority = priorityRepo.findById(dto.getPriorityName()).orElseThrow(RuntimeException::new); //todo custom exception
+        Priority priority = priorityRepo.findByName(dto.getPriorityName()).orElseThrow(RuntimeException::new); //todo custom exception
         task.setPriority(priority);
         User user = userRepo.findById(dto.getUserId()).orElseThrow(RuntimeException::new); //todo exception
         if (!project.getUsers().contains(user)) {
