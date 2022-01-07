@@ -1,4 +1,4 @@
-package pl.teo.crm.app;
+package pl.teo.crm.app.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

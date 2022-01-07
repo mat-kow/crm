@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/priorities")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 public class PriorityController {
 

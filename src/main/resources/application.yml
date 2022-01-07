@@ -6,3 +6,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+application:
+  jwt:
+    secret-key: longAndSecure longAndSecure longAndSecure longAndSecure longAndSecure longAndSecure
+    token-prefix: "Bearer "
+    expiration-after-days: 14

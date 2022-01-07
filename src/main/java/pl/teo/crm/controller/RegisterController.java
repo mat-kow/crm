@@ -9,7 +9,6 @@ import pl.teo.crm.model.dto.UserDto;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 public class RegisterController {
     private final UserService userService;

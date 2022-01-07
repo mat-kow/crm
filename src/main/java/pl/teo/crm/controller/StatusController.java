@@ -12,7 +12,6 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/api/statuses")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 public class StatusController {
 

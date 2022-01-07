@@ -7,7 +7,6 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/login")
-@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 public class LoginController {
 
