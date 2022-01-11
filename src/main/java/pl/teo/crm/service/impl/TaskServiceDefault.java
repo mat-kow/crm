@@ -3,6 +3,8 @@ package pl.teo.crm.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.teo.crm.app.exception.ApiBadRequestException;
+import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.*;
 import pl.teo.crm.model.dto.TaskDto;
 import pl.teo.crm.model.repository.*;
@@ -26,14 +28,14 @@ public class TaskServiceDefault implements TaskService {
         Task task = new Task();
         task.setTopic(dto.getTopic());
         task.setDescription(dto.getDescription());
-        Project project = projectRepo.findById(dto.getProjectId()).orElseThrow(RuntimeException::new); //todo custom exception
+        Project project = projectRepo.findById(dto.getProjectId()).orElseThrow(ApiNotFoundException::new);
         task.setProject(project);
         task.setStatus(statusRepo.findAll().get(0));
-        Priority priority = priorityRepo.findByName(dto.getPriorityName()).orElseThrow(RuntimeException::new); //todo custom exception
+        Priority priority = priorityRepo.findByName(dto.getPriorityName()).orElseThrow(ApiNotFoundException::new);
         task.setPriority(priority);
-        User user = userRepo.findById(dto.getUserId()).orElseThrow(RuntimeException::new); //todo exception
+        User user = userRepo.findById(dto.getUserId()).orElseThrow(ApiNotFoundException::new);
         if (!project.getUsers().contains(user)) {
-            throw new IllegalArgumentException(); //todo maybe better exception
+            throw new ApiBadRequestException(String.format("user %s is not assigned to this project", user.getUsername()));
         }
         task.setUser(user);
         taskRepo.save(task);
@@ -46,7 +48,7 @@ public class TaskServiceDefault implements TaskService {
 
     @Override
     public Task getTask(int id) {
-        return taskRepo.findById(id).orElseThrow(RuntimeException::new); //todo exception
+        return taskRepo.findById(id).orElseThrow(ApiNotFoundException::new);
     }
 
     @Override

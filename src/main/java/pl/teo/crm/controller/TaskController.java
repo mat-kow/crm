@@ -3,6 +3,7 @@ package pl.teo.crm.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.model.Task;
 import pl.teo.crm.model.dto.TaskDto;
 import pl.teo.crm.service.TaskService;
@@ -35,7 +36,7 @@ public class TaskController {
     @PutMapping("/{taskId}")
     public Task updateTask(@PathVariable int taskId, @RequestBody Task task) {
         if (taskId != task.getId()) {
-            throw new RuntimeException(); //todo exception
+            throw new ApiBadRequestException("id from URL don't match entity id");
         }
         return taskService.update(task);
     }

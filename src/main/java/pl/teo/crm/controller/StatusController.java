@@ -3,6 +3,7 @@ package pl.teo.crm.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.model.Status;
 import pl.teo.crm.model.dto.StatusDto;
 import pl.teo.crm.service.StatusService;
@@ -37,7 +38,7 @@ public class StatusController {
         if (id == status.getId()) {
             return statusService.update(status);
         }
-        throw new RuntimeException(); //todo exception
+        throw new ApiBadRequestException("id from URL don't match entity id");
     }
 
     @GetMapping("/{id}")

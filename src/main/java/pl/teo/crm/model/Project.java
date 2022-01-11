@@ -18,7 +18,7 @@ public class Project {
     private String description;
     private String slug;
     private String site;
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> users;
     private boolean active;
     @CreationTimestamp

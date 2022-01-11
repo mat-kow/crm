@@ -3,6 +3,7 @@ package pl.teo.crm.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.service.UserService;
 import pl.teo.crm.model.dto.UserDto;
 
@@ -15,12 +16,13 @@ public class RegisterController {
 
     @PostMapping("")
     public boolean register(@RequestBody UserDto dto) {
+        dto.setUsername(dto.getUsername().strip());
         if (userService.addNewUser(dto)) {
-            log.info(String.format("Success registering user: ,%s>", dto.getUsername()));
-            return true; //todo response code 200
+            log.info(String.format("Success registering user: <%s>", dto.getUsername()));
+            return true;
         } else {
-            log.info(String.format("failed registering user: ,%s>", dto.getUsername()));
-            return false; //todo error, username taken
+            log.info(String.format("failed registering user: <%s>", dto.getUsername()));
+            throw new ApiBadRequestException("username taken");
         }
     }
 }

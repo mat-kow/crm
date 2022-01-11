@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.Status;
 import pl.teo.crm.model.dto.StatusDto;
 import pl.teo.crm.model.repository.StatusRepo;
@@ -44,7 +45,7 @@ public class StatusServiceDefault implements StatusService {
 
     @Override
     public Status get(int id) {
-        return statusRepo.findById(id).orElseThrow(RuntimeException::new); //todo exception
+        return statusRepo.findById(id).orElseThrow(ApiNotFoundException::new);
     }
 
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.Priority;
 import pl.teo.crm.model.dto.PriorityDto;
 import pl.teo.crm.model.repository.PriorityRepo;
@@ -42,7 +43,7 @@ public class PriorityServiceDefault implements PriorityService {
 
     @Override
     public Priority get(int id) {
-        return priorityRepo.findById(id).orElseThrow(RuntimeException::new); //todo exception
+        return priorityRepo.findById(id).orElseThrow(ApiNotFoundException::new);
     }
 
     @Override

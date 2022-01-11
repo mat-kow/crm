@@ -3,6 +3,7 @@ package pl.teo.crm.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.model.Priority;
 import pl.teo.crm.model.dto.PriorityDto;
 import pl.teo.crm.service.PriorityService;
@@ -53,6 +54,6 @@ public class PriorityController {
         if (id == priority.getId()) {
             return priorityService.update(priority);
         }
-        throw new RuntimeException(); //todo exception
+        throw new ApiBadRequestException("id from URL don't match entity id");
     }
 }
