@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.model.Priority;
-import pl.teo.crm.model.dto.PriorityDto;
+import pl.teo.crm.model.dto.PriorityCreationDto;
 import pl.teo.crm.service.PriorityService;
 
 import java.util.Collection;
@@ -20,7 +20,7 @@ public class PriorityController {
     private final PriorityService priorityService;
 
     @PostMapping("")
-    public void createNewPriority(@RequestBody PriorityDto dto) {
+    public void createNewPriority(@RequestBody PriorityCreationDto dto) {
         priorityService.createPriority(dto);
     }
 

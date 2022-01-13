@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.model.Status;
-import pl.teo.crm.model.dto.StatusDto;
+import pl.teo.crm.model.dto.StatusCreationDto;
 import pl.teo.crm.service.StatusService;
 
 import java.util.Collection;
@@ -19,7 +19,7 @@ public class StatusController {
     private final StatusService statusService;
 
     @PostMapping("")
-    public Status createNewStatus(@RequestBody StatusDto dto) {
+    public Status createNewStatus(@RequestBody StatusCreationDto dto) {
         return statusService.createStatus(dto);
     }
 

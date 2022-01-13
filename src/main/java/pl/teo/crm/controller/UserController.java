@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import pl.teo.crm.app.exception.ApiBadRequestException;
+import pl.teo.crm.model.dto.UserCreationDto;
 import pl.teo.crm.model.dto.UserDto;
 import pl.teo.crm.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/search")
-    public List<UserDto> findUsers(@RequestParam String q) {
+    public List<UserCreationDto> findUsers(@RequestParam String q) {
         q = q.trim();
         log.info(String.format("user search query <%s>", q));
         if (q.length() < 3) {
@@ -26,10 +28,22 @@ public class UserController {
         return userService.findUser(q);
     }
 
-    @GetMapping("/searchq")
-    public List<UserDto> findUsersTest() {
-        log.info(String.format("user search query <%s>", "teo"));
-        return userService.findUser("teo");
+    @PostMapping("/admins")
+    public UserDto makeAdmin(@RequestBody String username, Principal principal) {
+        log.info("{} makes {} an admin", principal.getName(), username);
+        return userService.makeAdmin(username);
+    }
+
+    @GetMapping("/admins")
+    public List<UserDto> getAdmins() {
+        log.info("fetching admins");
+        return userService.getAdmins();
+    }
+
+    @DeleteMapping("/admins/{username}")
+    public UserDto removeAdmin(@PathVariable String username, Principal principal) {
+        log.info("{} removes admin from {}", principal.getName(), username);
+        return userService.removeAdmin(username);
     }
 
 }

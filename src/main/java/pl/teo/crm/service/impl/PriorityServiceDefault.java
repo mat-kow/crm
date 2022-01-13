@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.Priority;
-import pl.teo.crm.model.dto.PriorityDto;
+import pl.teo.crm.model.dto.PriorityCreationDto;
 import pl.teo.crm.model.repository.PriorityRepo;
 import pl.teo.crm.service.PriorityService;
 
@@ -24,7 +24,7 @@ public class PriorityServiceDefault implements PriorityService {
 
     @Override
     @Transactional
-    public void createPriority(PriorityDto dto) {
+    public void createPriority(PriorityCreationDto dto) {
         Priority priority = mapper.map(dto, Priority.class);
         priority.setName(priority.getName().toLowerCase(Locale.ROOT));
         priority.setActive(true);

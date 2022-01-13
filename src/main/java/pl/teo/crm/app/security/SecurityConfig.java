@@ -32,9 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/project/**", "/api/tasks/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/status/**/sorting/**").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.GET, "/api/users/**", "/api/project/**", "/api/status/**").hasRole("USER")
+                .antMatchers("/api/users/admins", "/api/users/admins/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()
                 .csrf().disable();

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.Status;
-import pl.teo.crm.model.dto.StatusDto;
+import pl.teo.crm.model.dto.StatusCreationDto;
 import pl.teo.crm.model.repository.StatusRepo;
 import pl.teo.crm.service.StatusService;
 
@@ -21,7 +21,7 @@ public class StatusServiceDefault implements StatusService {
 
     @Override
     @Transactional
-    public Status createStatus(StatusDto dto) {
+    public Status createStatus(StatusCreationDto dto) {
         Status status = modelMapper.map(dto, Status.class);
         status.setActive(true);
         return statusRepo.save(status);

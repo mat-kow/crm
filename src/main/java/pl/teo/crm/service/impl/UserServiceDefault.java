@@ -5,9 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.teo.crm.app.exception.ApiNotFoundException;
+import pl.teo.crm.model.dto.UserDto;
 import pl.teo.crm.service.UserService;
 import pl.teo.crm.model.User;
-import pl.teo.crm.model.dto.UserDto;
+import pl.teo.crm.model.dto.UserCreationDto;
 import pl.teo.crm.model.Role;
 import pl.teo.crm.model.repository.UserRepo;
 
@@ -22,11 +24,11 @@ public class UserServiceDefault implements UserService {
 
     @Override
     @Transactional
-    public boolean addNewUser(UserDto userDto) {
-        if (userRepo.existsByUsername(userDto.getUsername())) {
+    public boolean addNewUser(UserCreationDto dto) {
+        if (userRepo.existsByUsername(dto.getUsername())) {
             return false;
         }
-        User user = mapper.map(userDto, User.class);
+        User user = mapper.map(dto, User.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.addRole(Role.ROLE_USER);
         userRepo.save(user);
@@ -34,12 +36,34 @@ public class UserServiceDefault implements UserService {
     }
 
     @Override
-    public List<UserDto> findUser(String query) {
+    public List<UserCreationDto> findUser(String query) {
         List<User> users = userRepo.findAllByQuery(query);
         return users.stream().map(user -> {
-            UserDto dto = mapper.map(user, UserDto.class);
+            UserCreationDto dto = mapper.map(user, UserCreationDto.class);
             dto.setPassword("");
             return dto;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public UserDto makeAdmin(String username) {
+        User user = userRepo.getUserByUsername(username).orElseThrow(ApiNotFoundException::new);
+        user.addRole(Role.ROLE_ADMIN);
+        return mapper.map(userRepo.save(user), UserDto.class);
+    }
+
+    @Override
+    public UserDto removeAdmin(String username) {
+        User user = userRepo.getUserByUsername(username).orElseThrow(ApiNotFoundException::new);
+        user.removeRole(Role.ROLE_ADMIN);
+        return mapper.map(userRepo.save(user), UserDto.class);
+    }
+
+    @Override
+    public List<UserDto> getAdmins() {
+        return userRepo.findAllAdmins().stream()
+                .map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
+    }
+
+
 }

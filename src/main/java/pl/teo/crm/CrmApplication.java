@@ -6,9 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.teo.crm.model.Priority;
 import pl.teo.crm.model.Role;
 import pl.teo.crm.model.Status;
 import pl.teo.crm.model.User;
+import pl.teo.crm.model.repository.PriorityRepo;
 import pl.teo.crm.model.repository.StatusRepo;
 import pl.teo.crm.model.repository.UserRepo;
 
@@ -21,6 +23,7 @@ public class CrmApplication {
     private final UserRepo userRepo;
     private final PasswordEncoder encoder;
     private final StatusRepo statusRepo;
+    private final PriorityRepo priorityRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(CrmApplication.class, args);
@@ -34,7 +37,8 @@ public class CrmApplication {
                         encoder.encode("user1"), List.of(Role.ROLE_USER)));
                 userRepo.save(new User(2, "admin", "admin", "admin",
                         encoder.encode("admin1"), List.of(Role.ROLE_USER, Role.ROLE_ADMIN)));
-                statusRepo.save(new Status(3, "default" , -1, true));
+                statusRepo.save(new Status(3, "created" , 10, true));
+                priorityRepo.save(new Priority(4, "normal", true, 10));
             }
         };
     }

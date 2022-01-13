@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class StatusDto {
+public class StatusCreationDto {
     private String name;
     private int sortingValue;
 }

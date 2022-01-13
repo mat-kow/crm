@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class PriorityDto {
+public class PriorityCreationDto {
     private String name;
     private int sortValue;
 }

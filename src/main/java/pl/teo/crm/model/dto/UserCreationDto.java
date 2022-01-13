@@ -6,9 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class UserDto {
-    private int id;
+public class UserCreationDto {
     private String username;
     private String firstname;
     private String lastname;
+    private String password;
+//    private int id;
 }

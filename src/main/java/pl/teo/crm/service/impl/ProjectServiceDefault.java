@@ -9,7 +9,7 @@ import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.Project;
 import pl.teo.crm.model.User;
 import pl.teo.crm.model.dto.ProjectDto;
-import pl.teo.crm.model.dto.ProjectFormDto;
+import pl.teo.crm.model.dto.ProjectCreationDto;
 import pl.teo.crm.model.repository.ProjectRepo;
 import pl.teo.crm.model.repository.UserRepo;
 import pl.teo.crm.service.ProjectService;
@@ -27,7 +27,7 @@ public class ProjectServiceDefault implements ProjectService {
 
     @Override
     @Transactional
-    public Project createNewProject(ProjectFormDto dto, Principal principal) {
+    public Project createNewProject(ProjectCreationDto dto, Principal principal) {
         Project project = mapper.map(dto, Project.class);
         project.setSlug(generateSlug(project.getName()));
         project.setActive(true);
@@ -36,49 +36,10 @@ public class ProjectServiceDefault implements ProjectService {
     }
 
     @Override
-    @Transactional
-    public boolean activateProject(int projectId) {
-        Project project = projectRepo.findById(projectId).orElseThrow(ApiNotFoundException::new);
-        if (project.isActive()) {
-            return false;
-        }
-        project.setActive(true);
-        projectRepo.save(project);
-        return true;
-    }
-    @Override
-    @Transactional
-    public boolean deactivateProject(int projectId) {
-        Project project = projectRepo.findById(projectId).orElseThrow(ApiNotFoundException::new);
-        if (!project.isActive()) {
-            return false;
-        }
-        project.setActive(false);
-        projectRepo.save(project);
-        return true;
-    }
-
-    @Override
-    @Transactional
-    public Project addUsers(int projectId, List<Integer> usersIds) {
-        Project project = projectRepo.findById(projectId).orElseThrow(ApiNotFoundException::new);
-        usersIds.forEach(userId -> project.addUser(userRepo.getById(userId))); //todo if user don't exist
-        return projectRepo.save(project);
-    }
-
-    @Override
-    @Transactional
-    public void deleteUsers(int projectId, List<Integer> usersIds) {
-        Project project = projectRepo.findById(projectId).orElseThrow(ApiNotFoundException::new);
-        usersIds.forEach(userId -> project.removeUser(userRepo.getById(userId))); //todo if user don't exist
-        projectRepo.save(project);
-    }
-
-    @Override
     public ProjectDto getProjectById(int projectId) {
-        Project project = projectRepo.getById(projectId);
+        Project project = projectRepo.findById(projectId).orElseThrow(ApiNotFoundException::new);
         ProjectDto dto = mapper.map(project, ProjectDto.class);
-        dto.setCreatedAt(project.getCreatedAt().toLocalDateTime());
+//        dto.setCreatedAt(project.getCreatedAt().toLocalDateTime());
         return dto;
     }
 

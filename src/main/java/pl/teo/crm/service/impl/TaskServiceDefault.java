@@ -1,16 +1,19 @@
 package pl.teo.crm.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.app.exception.ApiNotFoundException;
 import pl.teo.crm.model.*;
+import pl.teo.crm.model.dto.TaskCreationDto;
 import pl.teo.crm.model.dto.TaskDto;
 import pl.teo.crm.model.repository.*;
 import pl.teo.crm.service.TaskService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,10 +24,11 @@ public class TaskServiceDefault implements TaskService {
     private final StatusRepo statusRepo;
     private final PriorityRepo priorityRepo;
     private final UserRepo userRepo;
+    private final ModelMapper mapper;
 
     @Transactional
     @Override
-    public void createTask(TaskDto dto) {
+    public void createTask(TaskCreationDto dto) {
         Task task = new Task();
         task.setTopic(dto.getTopic());
         task.setDescription(dto.getDescription());
@@ -42,17 +46,19 @@ public class TaskServiceDefault implements TaskService {
     }
 
     @Override
-    public List<Task> getByProjectId(int projectId) {
-        return taskRepo.findAllByProjectId(projectId);
+    public List<TaskDto> getByProjectId(int projectId) {
+        return taskRepo.findAllByProjectId(projectId).stream()
+                .map(task -> mapper.map(task, TaskDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public Task getTask(int id) {
-        return taskRepo.findById(id).orElseThrow(ApiNotFoundException::new);
+    public TaskDto getTask(int id) {
+        Task task = taskRepo.findById(id).orElseThrow(ApiNotFoundException::new);
+        return mapper.map(task, TaskDto.class);
     }
 
     @Override
-    public Task update(Task task) {
-        return taskRepo.save(task);
+    public TaskDto update(Task task) {
+        return mapper.map(taskRepo.save(task), TaskDto.class);
     }
 }

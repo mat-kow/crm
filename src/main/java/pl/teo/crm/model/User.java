@@ -22,11 +22,16 @@ public class User {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Collection<Role> roles;
-    public void addRole (Role role) {
+
+    public void addRole(Role role) {
         if (roles == null) {
             roles = new ArrayList<>();
         }
         roles.add(role);
+    }
+
+    public void removeRole(Role role) {
+        roles.remove(role);
     }
 
     @Override

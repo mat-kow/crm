@@ -14,4 +14,9 @@ public interface UserRepo extends JpaRepository<User, Integer> {
             "OR LOWER(u.lastname) LIKE LOWER(concat('%', concat(?1, '%')))" +
             "OR LOWER(u.username) LIKE LOWER(concat('%', concat(?1, '%')))")
     List<User> findAllByQuery(String query);
+    @Query(
+            value = "SELECT * FROM users WHERE id IN (SELECT users_id FROM users_roles WHERE roles='ROLE_ADMIN')",
+            nativeQuery = true
+    )
+    List<User> findAllAdmins();
 }

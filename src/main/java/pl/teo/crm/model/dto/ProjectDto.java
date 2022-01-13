@@ -2,9 +2,8 @@ package pl.teo.crm.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import pl.teo.crm.model.User;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Getter @Setter
@@ -14,8 +13,8 @@ public class ProjectDto {
     private String description;
     private String slug;
     private String site;
-    private Set<User> users;
+    private Set<UserDto> users;
     private boolean active;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
 }
