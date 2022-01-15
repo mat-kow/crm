@@ -9,6 +9,7 @@ import pl.teo.crm.model.dto.TaskCreationDto;
 import pl.teo.crm.model.dto.TaskDto;
 import pl.teo.crm.service.TaskService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("")
-    public void createNewTask(@RequestBody TaskCreationDto dto) {
+    public void createNewTask(@Valid @RequestBody TaskCreationDto dto) {
         taskService.createTask(dto);
     }
 
@@ -35,7 +36,7 @@ public class TaskController {
     }
 
     @PutMapping("/{taskId}")
-    public TaskDto updateTask(@PathVariable int taskId, @RequestBody Task task) {
+    public TaskDto updateTask(@PathVariable int taskId, @Valid @RequestBody Task task) {
         if (taskId != task.getId()) {
             throw new ApiBadRequestException("id from URL don't match entity id");
         }

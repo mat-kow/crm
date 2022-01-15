@@ -8,6 +8,7 @@ import pl.teo.crm.model.Priority;
 import pl.teo.crm.model.dto.PriorityCreationDto;
 import pl.teo.crm.service.PriorityService;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class PriorityController {
     private final PriorityService priorityService;
 
     @PostMapping("")
-    public void createNewPriority(@RequestBody PriorityCreationDto dto) {
+    public void createNewPriority(@Valid @RequestBody PriorityCreationDto dto) {
         priorityService.createPriority(dto);
     }
 
@@ -49,7 +50,7 @@ public class PriorityController {
     }
 
     @PutMapping("/{id}")
-    public Priority updatePriority(@PathVariable int id, @RequestBody Priority priority) {
+    public Priority updatePriority(@PathVariable int id, @Valid @RequestBody Priority priority) {
         log.info(String.format("updating priority <%s>", priority.getName()));
         if (id == priority.getId()) {
             return priorityService.update(priority);

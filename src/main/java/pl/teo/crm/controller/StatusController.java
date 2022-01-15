@@ -8,6 +8,7 @@ import pl.teo.crm.model.Status;
 import pl.teo.crm.model.dto.StatusCreationDto;
 import pl.teo.crm.service.StatusService;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
@@ -19,7 +20,7 @@ public class StatusController {
     private final StatusService statusService;
 
     @PostMapping("")
-    public Status createNewStatus(@RequestBody StatusCreationDto dto) {
+    public Status createNewStatus(@Valid @RequestBody StatusCreationDto dto) {
         return statusService.createStatus(dto);
     }
 
@@ -34,7 +35,7 @@ public class StatusController {
     }
 
     @PutMapping("/{id}")
-    public Status updateStatus(@PathVariable int id, @RequestBody Status status) {
+    public Status updateStatus(@PathVariable int id, @Valid @RequestBody Status status) {
         if (id == status.getId()) {
             return statusService.update(status);
         }

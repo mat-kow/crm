@@ -5,6 +5,10 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,9 +18,13 @@ import java.util.Set;
 public class Project {
     @Id @GeneratedValue
     private int id;
+    @NotBlank(message = "notBlank") @Size(min = 3, max = 20, message = "size")
     private String name;
+    @NotNull
+    @Size(max = 200, message = "size")
     private String description;
     private String slug;
+    @Pattern(regexp = "((https?:\\/\\/)?[\\w\\d]+([.\\w\\d]+)*(:\\d+)?(\\/[\\w\\d]+)*)|()", message = "pattern")// todo fix regex
     private String site;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> users;

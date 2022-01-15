@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 @Entity (name = "tasks")
@@ -12,7 +14,9 @@ import java.sql.Timestamp;
 public class Task {
     @Id @GeneratedValue
     private int id;
+    @NotBlank(message = "notBlank") @Size(min = 3, max = 20, message = "size")
     private String topic;
+    @Size(max = 200, message = "size")
     private String description;
     @CreationTimestamp
     private Timestamp createdAt;

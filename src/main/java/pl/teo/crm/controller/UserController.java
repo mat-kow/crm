@@ -8,6 +8,7 @@ import pl.teo.crm.model.dto.UserCreationDto;
 import pl.teo.crm.model.dto.UserDto;
 import pl.teo.crm.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/admins")
-    public UserDto makeAdmin(@RequestBody String username, Principal principal) {
+    public UserDto makeAdmin(@Valid @RequestBody String username, Principal principal) {
         log.info("{} makes {} an admin", principal.getName(), username);
         return userService.makeAdmin(username);
     }

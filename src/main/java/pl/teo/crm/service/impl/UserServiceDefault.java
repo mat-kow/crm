@@ -46,6 +46,7 @@ public class UserServiceDefault implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto makeAdmin(String username) {
         User user = userRepo.getUserByUsername(username).orElseThrow(ApiNotFoundException::new);
         user.addRole(Role.ROLE_ADMIN);
@@ -53,6 +54,7 @@ public class UserServiceDefault implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDto removeAdmin(String username) {
         User user = userRepo.getUserByUsername(username).orElseThrow(ApiNotFoundException::new);
         user.removeRole(Role.ROLE_ADMIN);
