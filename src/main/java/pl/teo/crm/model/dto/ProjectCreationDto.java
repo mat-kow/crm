@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class ProjectCreationDto {
-    @NotBlank(message = "notBlank") @Size(min = 3, max = 20, message = "size")
+    @NotBlank(message = "notBlank") @Size(min = 3, max = 50, message = "size")
     private String name;
     @NotNull @Size(max = 200, message = "size")
     private String description;

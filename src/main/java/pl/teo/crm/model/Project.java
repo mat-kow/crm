@@ -18,7 +18,7 @@ import java.util.Set;
 public class Project {
     @Id @GeneratedValue
     private int id;
-    @NotBlank(message = "notBlank") @Size(min = 3, max = 20, message = "size")
+    @NotBlank(message = "notBlank") @Size(min = 3, max = 50, message = "size")
     private String name;
     @NotNull
     @Size(max = 200, message = "size")

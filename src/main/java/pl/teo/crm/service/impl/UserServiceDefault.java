@@ -13,6 +13,7 @@ import pl.teo.crm.model.dto.UserCreationDto;
 import pl.teo.crm.model.Role;
 import pl.teo.crm.model.repository.UserRepo;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,5 +68,8 @@ public class UserServiceDefault implements UserService {
                 .map(user -> mapper.map(user, UserDto.class)).collect(Collectors.toList());
     }
 
-
+    @Override
+    public User getCurrentUser(Principal principal) {
+        return userRepo.getUserByUsername(principal.getName()).orElseThrow(ApiNotFoundException::new);
+    }
 }

@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class Task {
     @Id @GeneratedValue
     private int id;
-    @NotBlank(message = "notBlank") @Size(min = 3, max = 20, message = "size")
+    @NotBlank(message = "notBlank") @Size(min = 3, max = 50, message = "size")
     private String topic;
     @Size(max = 200, message = "size")
     private String description;

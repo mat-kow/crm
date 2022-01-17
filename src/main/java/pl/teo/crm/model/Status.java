@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class Status {
     @Id @GeneratedValue
     private int id;
-    @NotBlank(message = "notBlank") @Size(min = 3, max = 10, message = "size")
+    @NotBlank(message = "notBlank") @Size(min = 3, max = 20, message = "size")
     private String name;
     private int sortingValue;
     private boolean active;

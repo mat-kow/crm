@@ -12,6 +12,7 @@ import pl.teo.crm.model.dto.TaskDto;
 import pl.teo.crm.model.repository.*;
 import pl.teo.crm.service.TaskService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +26,11 @@ public class TaskServiceDefault implements TaskService {
     private final PriorityRepo priorityRepo;
     private final UserRepo userRepo;
     private final ModelMapper mapper;
+    private final ActivityRepo activityRepo;
 
     @Transactional
     @Override
-    public void createTask(TaskCreationDto dto) {
+    public void createTask(TaskCreationDto dto, Principal principal) {
         Task task = new Task();
         task.setTopic(dto.getTopic());
         task.setDescription(dto.getDescription());
@@ -43,6 +45,9 @@ public class TaskServiceDefault implements TaskService {
         }
         task.setUser(user);
         taskRepo.save(task);
+        Activity activity = new Activity(principal.getName(), ActivitySubject.TASK, task.getId(),
+                ActivityAction.CREATION, task.getProject().getId());
+        activityRepo.save(activity);
     }
 
     @Override
@@ -58,7 +63,15 @@ public class TaskServiceDefault implements TaskService {
     }
 
     @Override
-    public TaskDto update(Task task) {
-        return mapper.map(taskRepo.save(task), TaskDto.class);
+    @Transactional
+    public TaskDto update(Task task, Principal principal) {
+        String oldStatus = taskRepo.getStatusNameByTaskId(task.getId());
+        taskRepo.save(task);
+        if (!task.getStatus().getName().equals(oldStatus)) {
+            Activity activity = new Activity(principal.getName(), ActivitySubject.TASK, task.getId(),
+                    ActivityAction.STATUS_CHANGE, task.getProject().getId());
+            activityRepo.save(activity);
+        }
+        return mapper.map(task, TaskDto.class);
     }
 }

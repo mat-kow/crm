@@ -6,13 +6,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.teo.crm.app.exception.ApiNotFoundException;
-import pl.teo.crm.model.Project;
-import pl.teo.crm.model.User;
+import pl.teo.crm.model.*;
 import pl.teo.crm.model.dto.ProjectDto;
 import pl.teo.crm.model.dto.ProjectCreationDto;
+import pl.teo.crm.model.repository.ActivityRepo;
 import pl.teo.crm.model.repository.ProjectRepo;
 import pl.teo.crm.model.repository.UserRepo;
 import pl.teo.crm.service.ProjectService;
+import pl.teo.crm.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -23,7 +24,8 @@ import java.util.Locale;
 public class ProjectServiceDefault implements ProjectService {
     private final ModelMapper mapper;
     private final ProjectRepo projectRepo;
-    private final UserRepo userRepo;
+    private final ActivityRepo activityRepo;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -31,15 +33,19 @@ public class ProjectServiceDefault implements ProjectService {
         Project project = mapper.map(dto, Project.class);
         project.setSlug(generateSlug(project.getName()));
         project.setActive(true);
-        project.addUser(getCurrentUser(principal));
-        return projectRepo.save(project);
+        User currentUser = userService.getCurrentUser(principal);
+        project.addUser(currentUser);
+        projectRepo.save(project);
+        Activity activity = new Activity(principal.getName(), ActivitySubject.PROJECT, project.getId(),
+                ActivityAction.CREATION, project.getId());
+        activityRepo.save(activity);
+        return project;
     }
 
     @Override
     public ProjectDto getProjectById(int projectId) {
         Project project = projectRepo.findById(projectId).orElseThrow(ApiNotFoundException::new);
         ProjectDto dto = mapper.map(project, ProjectDto.class);
-//        dto.setCreatedAt(project.getCreatedAt().toLocalDateTime());
         return dto;
     }
 
@@ -60,9 +66,5 @@ public class ProjectServiceDefault implements ProjectService {
                 .toLowerCase(Locale.ROOT)
                 .replaceAll("[,.!?]", "");
 
-    }
-
-    private User getCurrentUser(Principal principal) {
-        return userRepo.getUserByUsername(principal.getName()).orElseThrow(ApiNotFoundException::new);
     }
 }
