@@ -14,5 +14,7 @@ public interface ProjectService {
 
     Project update(Project project);
 
-    List<Project> getAll();
+    List<ProjectDto> getAll();
+
+    void delete(int projectId);
 }

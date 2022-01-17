@@ -11,13 +11,13 @@ import pl.teo.crm.model.dto.ProjectDto;
 import pl.teo.crm.model.dto.ProjectCreationDto;
 import pl.teo.crm.model.repository.ActivityRepo;
 import pl.teo.crm.model.repository.ProjectRepo;
-import pl.teo.crm.model.repository.UserRepo;
 import pl.teo.crm.service.ProjectService;
 import pl.teo.crm.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +56,14 @@ public class ProjectServiceDefault implements ProjectService {
     }
 
     @Override
-    public List<Project> getAll() {
-        return projectRepo.findAll();
+    public List<ProjectDto> getAll() {
+        return projectRepo.findAll().stream()
+                .map(project -> mapper.map(project, ProjectDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(int projectId) {
+        projectRepo.deleteById(projectId);
     }
 
     private String generateSlug(String input) {

@@ -18,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ProjectController {
+
     private final ProjectService projectService;
 
     @PostMapping("")
@@ -44,8 +45,15 @@ public class ProjectController {
     }
 
     @GetMapping("")
-    public List<Project> getAll() {
+    public List<ProjectDto> getAll() {
         return projectService.getAll();
+    }
+
+    @DeleteMapping("/{projectId}")
+    public void deleteProject(@PathVariable int projectId) {
+        log.info("delete project, id: <{}>", projectId);
+        projectService.delete(projectId);
+        log.info("successfully deleted");
     }
 
 

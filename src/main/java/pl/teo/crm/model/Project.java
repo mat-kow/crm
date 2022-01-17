@@ -32,6 +32,9 @@ public class Project {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
+    private Set<Task> tasks;
+
 
     public void addUser(User user) {
         if (users == null) {
