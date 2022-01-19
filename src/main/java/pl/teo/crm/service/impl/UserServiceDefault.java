@@ -5,7 +5,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.teo.crm.app.exception.ApiBadRequestException;
 import pl.teo.crm.app.exception.ApiNotFoundException;
+import pl.teo.crm.model.dto.NewPasswordForm;
 import pl.teo.crm.model.dto.UserDto;
 import pl.teo.crm.service.UserService;
 import pl.teo.crm.model.User;
@@ -71,5 +73,28 @@ public class UserServiceDefault implements UserService {
     @Override
     public User getCurrentUser(Principal principal) {
         return userRepo.getUserByUsername(principal.getName()).orElseThrow(ApiNotFoundException::new);
+    }
+
+    @Override
+    @Transactional
+    public UserDto update(UserDto dto) {
+        User user = userRepo.save(mapper.map(dto, User.class));
+        return mapper.map(user, UserDto.class);
+    }
+
+    @Override
+    public UserDto getByUsername(String username) {
+        return mapper.map(userRepo.getUserByUsername(username).orElseThrow(ApiNotFoundException::new), UserDto.class);
+    }
+
+    @Override
+    public UserDto changePassword(NewPasswordForm form, Principal principal) {
+        User user = getCurrentUser(principal);
+        if (passwordEncoder.matches(form.getOldPass(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(form.getNewPass()));
+            userRepo.save(user);
+            return mapper.map(user, UserDto.class);
+        }
+        throw new ApiBadRequestException("oldPass: don't match");
     }
 }

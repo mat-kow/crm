@@ -74,4 +74,9 @@ public class TaskServiceDefault implements TaskService {
         }
         return mapper.map(task, TaskDto.class);
     }
+
+    @Override
+    public void delete(int taskId) {
+        taskRepo.deleteById(taskId);
+    }
 }

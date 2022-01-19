@@ -1,6 +1,7 @@
 package pl.teo.crm.service;
 
 import pl.teo.crm.model.User;
+import pl.teo.crm.model.dto.NewPasswordForm;
 import pl.teo.crm.model.dto.UserCreationDto;
 import pl.teo.crm.model.dto.UserDto;
 
@@ -14,4 +15,7 @@ public interface UserService {
     UserDto removeAdmin(String username);
     List<UserDto> getAdmins();
     User getCurrentUser(Principal principal);
+    UserDto update(UserDto dto);
+    UserDto getByUsername(String username);
+    UserDto changePassword(NewPasswordForm form, Principal principal);
 }
